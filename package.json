@@ -1,6 +1,8 @@
 {
+  "type": "module",
   "dependencies": {
-    "prompt": "^1.2.2",
+    "dotenv": "^16.0.0",
+    "node-fetch": "^3.2.3",
     "prompt-sync": "^4.2.0"
   }
 }

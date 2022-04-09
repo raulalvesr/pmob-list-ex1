@@ -1,27 +1,14 @@
-const prompt = require('prompt-sync');
-const scanner = prompt();
+import {operacoes} from "./terceira.js";
+import promptSync from 'prompt-sync';
 
-const soma = (n1, n2) => n1 + n2;
+const scanner = promptSync();
 
-const subtracao = (n1, n2) => n1 - n2;
-
-const multiplicacao = (n1, n2) => n1 * n2;
-
-const divisao = (n1, n2) => {
-    if (n2 == 0)
-        throw 'Não é possível dividir por zero';
-
-    return n1 / n2;
-}
-
-const operacoes = {
-    1: soma,
-    2: subtracao,
-    3: multiplicacao,
-    4: divisao,
-}
-
-const possibleOperations = [1, 2, 3, 4];
+const possibleOperations = new Map([
+    [1, operacoes.soma],
+    [2, operacoes.subtracao],
+    [3, operacoes.multiplicacao],
+    [4, operacoes.divisao]
+]);
 
 while (true) {
     console.log('SELECIONE UMA OPÇÃO:');
@@ -33,38 +20,15 @@ while (true) {
 
     const chosenOption = +(scanner("> "));
 
-    if (possibleOperations.includes(chosenOption)) {
+    if (possibleOperations.has(chosenOption)) {
         const chosenNumbers = readNumbers();
-        const result = operacoes[chosenOption](chosenNumbers[0], chosenNumbers[1]);
-        console.log(`Resultado: ${result}\n`);
-    } else if(chosenOption == 5) {
+        const result = possibleOperations.get(chosenOption)(...chosenNumbers);
+        console.log(`\nRESULTADO: ${result}\n`);
+    } else if (chosenOption === 5) {
         break;
     } else {
         console.log("Opção inválida, tente novamente!\n");
     }
-    
-
-    // if (chosenOption == 1) {
-    //     const chosenNumbers = readNumbers();
-    //     const result = operacoes.chosenOption(chosenNumbers[0], chosenNumbers[1]);
-    //     console.log(`Resultado: ${result}\n`);
-    // } else if (chosenOption == 2) {
-    //     const chosenNumbers = readNumbers();
-    //     const result = operacoes.subtracao(chosenNumbers[0], chosenNumbers[1]);
-    //     console.log(`Resultado: ${result}\n`);
-    // } else if (chosenOption == 3) {
-    //     const chosenNumbers = readNumbers();
-    //     const result = operacoes.multiplicacao(chosenNumbers[0], chosenNumbers[1]);
-    //     console.log(`Resultado: ${result}\n`);
-    // } else if(chosenOption == 4) {
-    //     const chosenNumbers = readNumbers();
-    //     const result = operacoes.divisao(chosenNumbers[0], chosenNumbers[1]);
-    //     console.log(`Resultado: ${result}\n`);
-    // } 
-}
-
-function readOption() {
-
 }
 
 function readNumbers() {
@@ -72,11 +36,10 @@ function readNumbers() {
         const n1 = +(scanner("Digite o primeiro número: "));
         const n2 = +(scanner("Digite o segundo número: "));
 
-        if (isNaN(n1) || isNaN(n2)) {
-            console.log("É necessário digitar números válidos, tente novamente!");
-            continue;
+        if (!(isNaN(n1) || isNaN(n2))) {
+            return [n1, n2];
         }
 
-        return [n1, n2];
+        console.log("É necessário digitar números válidos, tente novamente!");
     }
 }
