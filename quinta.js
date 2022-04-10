@@ -13,12 +13,7 @@ function main() {
 
     const chosenOption = +(scanner("> "));
 
-    if (chosenOption !== 1) {
-        if (chosenOption !== 2) {
-            console.log("Opção inválida, tente novamente!\n");
-            main();
-        }
-    } else {
+    if (chosenOption === 1) {
         const [lat, lon] = readLatAndLon();
         const fetchTask = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}&units=${process.env.UNITS}`,)
             .then(resp => {
@@ -29,6 +24,9 @@ function main() {
                     });
             })
             .catch(err => console.log('deu ruim'))
+    } else if (chosenOption !== 2) {
+        console.log("Opção inválida, tente novamente!\n");
+        main();
     }
 }
 
