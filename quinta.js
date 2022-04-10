@@ -13,23 +13,23 @@ function main() {
 
     const chosenOption = +(scanner("> "));
 
-    if (chosenOption === 2) {
-        return;
-    } else if (chosenOption !== 1) {
-        console.log("Opção inválida, tente novamente!\n");
-        main();
+    if (chosenOption !== 1) {
+        if (chosenOption !== 2) {
+            console.log("Opção inválida, tente novamente!\n");
+            main();
+        }
+    } else {
+        const [lat, lon] = readLatAndLon();
+        const fetchTask = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}&units=${process.env.UNITS}`,)
+            .then(resp => {
+                resp.json()
+                    .then(x => {
+                        console.log(`\nTEMPERATURA: ${x.main.temp}ºC\n`)
+                        main();
+                    });
+            })
+            .catch(err => console.log('deu ruim'))
     }
-
-    const [lat, lon] = readLatAndLon();
-    const fetchTask = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}&units=${process.env.UNITS}`,)
-        .then(resp => {
-            resp.json()
-                .then(x => {
-                    console.log(`\nTEMPERATURA: ${x.main.temp}ºC\n`)
-                    main();
-                });
-        })
-        .catch(err => console.log('deu ruim'))
 }
 
 export function readLatAndLon() {
