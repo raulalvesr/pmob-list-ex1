@@ -20,12 +20,12 @@ while (true) {
 
     const chosenOption = +(scanner("> "));
 
-    if (possibleOperations.has(chosenOption)) {
+    if (chosenOption === 5) {
+        break;
+    } else if (possibleOperations.has(chosenOption)) {
         const chosenNumbers = readNumbers();
         const result = possibleOperations.get(chosenOption)(...chosenNumbers);
         console.log(`\nRESULTADO: ${result}\n`);
-    } else if (chosenOption === 5) {
-        break;
     } else {
         console.log("Opção inválida, tente novamente!\n");
     }
